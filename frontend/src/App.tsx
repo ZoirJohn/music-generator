@@ -1,7 +1,11 @@
-import { ComponentExample } from "@/components/component-example";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
 
-export function App() {
-return <ComponentExample />;
-}
+import "./index.css";
+import App from "./home.tsx";
 
-export default App;
+createRoot(document.getElementById("root")!).render(
+	<StrictMode>
+		<App />
+	</StrictMode>,
+);
