@@ -14,6 +14,9 @@ importers:
       express:
         specifier: ^5.2.1
         version: 5.2.1
+      random-seedable:
+        specifier: ^1.0.8
+        version: 1.0.8
       scribbletune:
         specifier: ^5.1.0
         version: 5.1.0
@@ -422,6 +425,9 @@ packages:
   qs@6.14.1:
     resolution: {integrity: sha512-4EK3+xJl8Ts67nLYNwqw/dsFVnCf+qR7RgXSK9jEEm9unao3njwMDdmsdvoKBKHzxd7tCYz5e5M+SnMjdtXGQQ==}
     engines: {node: '>=0.6'}
+
+  random-seedable@1.0.8:
+    resolution: {integrity: sha512-f6gzvNhAnZBht1Prn0e/tpukUNhkANntFF42uIdWDPriyEATYaRpyH8A9bYaGecUB3AL+dXeYtBUggy18fe3rw==}
 
   range-parser@1.2.1:
     resolution: {integrity: sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==}
@@ -963,6 +969,8 @@ snapshots:
   qs@6.14.1:
     dependencies:
       side-channel: 1.1.0
+
+  random-seedable@1.0.8: {}
 
   range-parser@1.2.1: {}
 

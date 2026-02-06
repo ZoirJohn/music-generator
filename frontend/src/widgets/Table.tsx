@@ -1,4 +1,4 @@
-import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/widgets/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/widgets/components/ui/table";
 
 const invoices = [
 	{
