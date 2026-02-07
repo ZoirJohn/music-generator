@@ -1,15 +1,19 @@
 import express from "express";
 import fs from "fs";
-import archiver from "archiver";
+import path from "path";
 import { generateSong } from "../services/song.service.js";
 
 const router = express.Router();
 
 router.get("/", (req, res) => {
-	const { seed = "1", locale = "en", likes = 5, page = 1, pageSize = 20 } = req.query;
+	const seed = req.query.seed || "1";
+	const locale = req.query.locale || "en";
+	const likesAvg = Number(req.query.likes ?? 5);
+	const page = Number(req.query.page ?? 1);
+	const pageSize = Number(req.query.pageSize ?? 20);
 
 	const start = (page - 1) * pageSize + 1;
-	const end = start + Number(pageSize) - 1;
+	const end = start + pageSize - 1;
 
 	const songs = [];
 	for (let i = start; i <= end; i++) {
@@ -18,45 +22,23 @@ router.get("/", (req, res) => {
 				seed,
 				index: i,
 				locale,
-				likesAvg: Number(likes),
+				likesAvg,
 			}),
 		);
 	}
 
-	res.json({ page: Number(page), songs });
+	res.json({ page, songs });
 });
 
 router.get("/audio/:seed/:index", (req, res) => {
 	const { seed, index } = req.params;
-	const file = `./audio/song-${seed}-${index}.mid`;
+	const file = path.resolve("./audio", `song-${seed}-${index}.mid`);
 
 	if (!fs.existsSync(file)) {
-		return res.status(404).end();
+		return res.status(404).json({ error: "Audio not found" });
 	}
 
-	res.sendFile(process.cwd() + "/" + file);
-});
-
-router.get("/export", (req, res) => {
-	const { seed = "1", locale = "en", likes = 5, count = 10 } = req.query;
-
-	res.setHeader("Content-Type", "application/zip");
-	res.setHeader("Content-Disposition", "attachment; filename=songs.zip");
-
-	const archive = archiver("zip");
-	archive.pipe(res);
-
-	for (let i = 1; i <= count; i++) {
-		const song = generateSong({
-			seed,
-			index: i,
-			locale,
-			likesAvg: Number(likes),
-		});
-		archive.file(song.audioFile, { name: `song-${i}.mid` });
-	}
-
-	archive.finalize();
+	res.sendFile(file);
 });
 
 export default router;
