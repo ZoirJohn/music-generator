@@ -1,4 +1,5 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/widgets/components/ui/table";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/widgets/components/ui/accordion";
 
 const invoices = [
 	{
@@ -50,19 +51,23 @@ export default function SongsTable() {
 		<Table>
 			<TableHeader>
 				<TableRow>
-					<TableHead className="w-25">#</TableHead>
-					<TableHead>Status</TableHead>
-					<TableHead>Method</TableHead>
-					<TableHead className="text-right">Amount</TableHead>
+					<TableHead>#</TableHead> <TableHead>Status</TableHead> <TableHead>Method</TableHead> 
 				</TableRow>
 			</TableHeader>
 			<TableBody>
-				{invoices.slice(0, 3).map((invoice) => (
-					<TableRow key={invoice.invoice}>
-						<TableCell className="font-medium">{parseInt(invoice.invoice.slice(3))}</TableCell>
-						<TableCell>{invoice.paymentStatus}</TableCell>
-						<TableCell>{invoice.paymentMethod}</TableCell>
-						<TableCell className="text-right">{invoice.totalAmount}</TableCell>
+				{invoices.map((invoice) => (
+					<TableRow key={invoice.invoice} className="w-full">
+						<TableCell className="p-0" colSpan={4}>
+							<Accordion type="multiple" className="w-full cursor-pointer" defaultValue={["notifications"]}>
+								<AccordionItem key={invoice.invoice} value={invoice.invoice}>
+									<AccordionTrigger className="p-2 ">
+										<TableCell className="p-0">1</TableCell>
+										<TableCell className="p-0">1</TableCell>
+									</AccordionTrigger>
+									<AccordionContent>{invoice.invoice}</AccordionContent>
+								</AccordionItem>
+							</Accordion>
+						</TableCell>
 					</TableRow>
 				))}
 			</TableBody>
