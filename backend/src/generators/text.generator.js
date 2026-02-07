@@ -2,21 +2,25 @@ import { faker } from "@faker-js/faker";
 
 const SUPPORTED_LOCALES = ["en", "fr"];
 
-function normalizeSeed(seed) {
-	let hash = 0;
-	const str = String(seed);
-	for (let i = 0; i < str.length; i++) {
-		hash = (hash << 5) - hash + str.charCodeAt(i);
-		hash |= 0;
+function bigIntToNumberArray(bigint, length = 8) {
+	const arr = [];
+	let temp = bigint;
+	const TWO32 = 2n ** 32n;
+
+	for (let i = 0; i < length; i++) {
+		arr.push(Number(temp % TWO32));
+		temp = temp / TWO32;
 	}
-	return Math.abs(hash);
+
+	return arr;
 }
 
-export function generateText(locale, seed) {
-	const safeLocale = SUPPORTED_LOCALES.includes(locale);
-
+export function generateText(locale, rng) {
+	const safeLocale = SUPPORTED_LOCALES.includes(locale) ? locale : "en";
 	faker.locale = safeLocale;
-	faker.seed(normalizeSeed(seed));
+
+	const seedNumbers = bigIntToNumberArray(rng.next(),2);
+	faker.seed(seedNumbers);
 
 	return {
 		title: faker.music.songName(),

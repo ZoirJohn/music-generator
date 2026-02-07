@@ -1,6 +1,10 @@
 import { XORShift64 } from "random-seedable";
+import { hashSeedToBigInt } from "./seed.js";
 
-export function rng(seed) {
-	const generator = new XORShift64(seed.toString());
-	return generator.bigInt();
+export function rng(...parts) {
+	const seed64 = hashSeedToBigInt(...parts);
+	const gen = new XORShift64(seed64);
+	return {
+		next: () => gen.bigInt(),
+	};
 }
