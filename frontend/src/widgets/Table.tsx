@@ -1,70 +1,34 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/widgets/components/ui/table";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/widgets/components/ui/accordion";
 
-const invoices = [
-	{
-		invoice: "INV001",
-		paymentStatus: "Paid",
-		totalAmount: "$250.00",
-		paymentMethod: "Credit Card",
-	},
-	{
-		invoice: "INV002",
-		paymentStatus: "Pending",
-		totalAmount: "$150.00",
-		paymentMethod: "PayPal",
-	},
-	{
-		invoice: "INV003",
-		paymentStatus: "Unpaid",
-		totalAmount: "$350.00",
-		paymentMethod: "Bank Transfer",
-	},
-	{
-		invoice: "INV004",
-		paymentStatus: "Paid",
-		totalAmount: "$450.00",
-		paymentMethod: "Credit Card",
-	},
-	{
-		invoice: "INV005",
-		paymentStatus: "Paid",
-		totalAmount: "$550.00",
-		paymentMethod: "PayPal",
-	},
-	{
-		invoice: "INV006",
-		paymentStatus: "Pending",
-		totalAmount: "$200.00",
-		paymentMethod: "Bank Transfer",
-	},
-	{
-		invoice: "INV007",
-		paymentStatus: "Unpaid",
-		totalAmount: "$300.00",
-		paymentMethod: "Credit Card",
-	},
-];
-
-export default function SongsTable() {
+export default function SongsTable({ songs }: { songs: any[] }) {
+	const HEAD_BODY_STYLE = "grid py-2 grid-cols-[25px_100px_1fr_1fr_1fr_1fr] justify-items-start";
 	return (
 		<Table>
 			<TableHeader>
-				<TableRow>
-					<TableHead>#</TableHead> <TableHead>Status</TableHead> <TableHead>Method</TableHead> 
+				<TableRow className={HEAD_BODY_STYLE + " " + "[&>th]:font-bold"}>
+					<TableHead className="h-auto"></TableHead>
+					<TableHead className="h-auto">#</TableHead>
+					<TableHead className="h-auto">Song</TableHead>
+					<TableHead className="h-auto">Artist</TableHead>
+					<TableHead className="h-auto">Album</TableHead>
+					<TableHead className="h-auto">Genre</TableHead>
 				</TableRow>
 			</TableHeader>
 			<TableBody>
-				{invoices.map((invoice) => (
-					<TableRow key={invoice.invoice} className="w-full">
+				{songs.map((song) => (
+					<TableRow key={song.index} className="w-full">
 						<TableCell className="p-0" colSpan={4}>
-							<Accordion type="multiple" className="w-full cursor-pointer" defaultValue={["notifications"]}>
-								<AccordionItem key={invoice.invoice} value={invoice.invoice}>
-									<AccordionTrigger className="p-2 ">
-										<TableCell className="p-0">1</TableCell>
-										<TableCell className="p-0">1</TableCell>
+							<Accordion type="multiple" className="w-full" defaultValue={["notifications"]}>
+								<AccordionItem key={song.title} value={song.title}>
+									<AccordionTrigger className={HEAD_BODY_STYLE + " " + "p-0 no-underline! items-center cursor-pointer [&>p]:max-w-full [&>p]:overflow-hidden [&>p]:text-ellipsis"}>
+										<p className="p-2">{song.index}</p>
+										<p className="p-2">{song.title}</p>
+										<p className="p-2">{song.artist}</p>
+										<p className="p-2">{song.album}</p>
+										<p className="p-2">{song.genre}</p>
 									</AccordionTrigger>
-									<AccordionContent>{invoice.invoice}</AccordionContent>
+									<AccordionContent>{song.album}</AccordionContent>
 								</AccordionItem>
 							</Accordion>
 						</TableCell>

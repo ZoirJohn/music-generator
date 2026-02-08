@@ -3,18 +3,11 @@ import { Button } from "@/widgets/components/ui/button";
 import { ButtonGroup } from "@/widgets/components/ui/button-group";
 import { Field } from "@/widgets/components/ui/field";
 import { Input } from "@/widgets/components/ui/input";
-import { Label } from "@/widgets/components/ui/label";
 import { Slider } from "@/widgets/components/ui/slider";
-import { useState } from "react";
 import type { Locales } from "@/types";
 
-export default function Nav() {
-	const [locale, setLocale] = useState<Locales | "">("");
-	const [seedNum, setSeedNum] = useState<string>("");
-	const [isExceeded, setIsExceeded] = useState(false);
-	const [value, setValue] = useState([10]);
+export default function Nav({ setSeedNum, setIsExceeded, locale, setLocale, seedNum, isExceeded, likesRange, setLikesRange }: { likesRange: number[]; setLikesRange: (args: number[]) => void; isExceeded: boolean; setIsExceeded: (args: boolean) => void; setSeedNum: (args: string) => void; locale: string; setLocale: (args: Locales) => void; seedNum: string }) {
 	const MAX_64_BIT = 18446744073709551615n;
-
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const rawValue = e.target.value.replace(/[^0-9]/g, "");
 
@@ -34,10 +27,11 @@ export default function Nav() {
 			setIsExceeded(false);
 		}
 	};
+
 	return (
-		<nav className="bg-gray-50 flex gap-24 p-4 items-center">
+		<nav className="flex items-center gap-24 bg-gray-50 p-4">
 			<Select value={locale} onValueChange={(value: Locales) => setLocale(value)}>
-				<SelectTrigger className="w-45 bg-white">
+				<SelectTrigger className="bg-white w-45">
 					<SelectValue placeholder="Language" />
 				</SelectTrigger>
 				<SelectContent>
@@ -61,12 +55,12 @@ export default function Nav() {
 					</Button>
 				</ButtonGroup>
 			</Field>
-			<div className="flex flex-col w-50 gap-3">
-				<div className="flex items-center justify-between gap-2">
-					<Label htmlFor="slider-demo-temperature">Likes</Label>
-					<span className="text-muted-foreground text-sm">{value[0]}</span>
+			<div className="flex flex-col gap-3 w-50">
+				<div className="flex justify-between items-center gap-2">
+					<p className="text-sm">Likes</p>
+					<span className="text-muted-foreground text-sm">{likesRange[0]}</span>
 				</div>
-				<Slider id="slider-demo-temperature" value={value} onValueChange={setValue} max={10} step={0.1} />
+				<Slider id="likes" value={likesRange} onValueChange={setLikesRange} max={10} step={0.1} />
 			</div>
 		</nav>
 	);

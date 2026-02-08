@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 
-const SUPPORTED_LOCALES = ["en", "fr"];
+const SUPPORTED_LOCALES = ["en", "de"];
 
 function bigIntToNumberArray(bigint, length = 8) {
 	const arr = [];

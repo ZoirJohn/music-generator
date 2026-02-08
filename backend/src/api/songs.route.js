@@ -9,8 +9,8 @@ router.get("/", (req, res) => {
 	const seed = req.query.seed || "1";
 	const locale = req.query.locale || "en";
 	const likesAvg = Number(req.query.likes ?? 5);
-	const page = Number(req.query.page ?? 1);
-	const pageSize = Number(req.query.pageSize ?? 20);
+	const page = Math.max(1, Number(req.query.page ?? 1));
+	const pageSize = Math.min(100, Number(req.query.pageSize ?? 50));
 
 	const start = (page - 1) * pageSize + 1;
 	const end = start + pageSize - 1;
@@ -27,7 +27,13 @@ router.get("/", (req, res) => {
 		);
 	}
 
-	res.json({ page, songs });
+	res.status(200).json({
+		ok: true,
+		page,
+		pageSize,
+		count: songs.length,
+		songs,
+	});
 });
 
 router.get("/audio/:seed/:index", (req, res) => {
@@ -35,10 +41,13 @@ router.get("/audio/:seed/:index", (req, res) => {
 	const file = path.resolve("./audio", `song-${seed}-${index}.mid`);
 
 	if (!fs.existsSync(file)) {
-		return res.status(404).json({ error: "Audio not found" });
+		return res.status(404).json({
+			ok: false,
+			error: "Audio file not found",
+		});
 	}
 
-	res.sendFile(file);
+	res.status(200).sendFile(file);
 });
 
 export default router;
