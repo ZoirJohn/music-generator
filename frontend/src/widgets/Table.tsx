@@ -2,6 +2,7 @@ import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, Table
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/widgets/components/ui/accordion";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink } from "@/widgets/components/ui/pagination";
 import type { ModeType } from "@/routes/home";
+import { ThumbsUp } from "lucide-react";
 
 export default function SongsTable({ songs, page, setPage, mode }: { songs: any[]; setPage: (args: number) => void; page: number; mode: ModeType }) {
 	const HEAD_BODY_STYLE = "grid py-2 grid-cols-[25px_100px_1fr_1fr_1fr_1fr] justify-items-start";
@@ -20,8 +21,8 @@ export default function SongsTable({ songs, page, setPage, mode }: { songs: any[
 			<TableBody>
 				<div className={(mode == "list" ? "h-[calc(100vh-110px)]" : "h-[calc(100vh-150px)]") + " overflow-auto"}>
 					{songs.map((song) => (
-						<TableRow key={song.index} className="w-full block" data-row>
-							<TableCell  colSpan={4} className="w-full block p-0">
+						<TableRow key={song.index} className="block w-full" data-row>
+							<TableCell colSpan={4} className="block p-0 w-full">
 								<Accordion type="multiple" defaultValue={["notifications"]}>
 									<AccordionItem key={song.title} value={song.title}>
 										<AccordionTrigger className={HEAD_BODY_STYLE + " " + "p-0 no-underline! items-center cursor-pointer [&>p]:max-w-full [&>p]:overflow-hidden [&>p]:text-ellipsis"}>
@@ -31,7 +32,15 @@ export default function SongsTable({ songs, page, setPage, mode }: { songs: any[
 											<p className="p-2">{song.album}</p>
 											<p className="p-2">{song.genre}</p>
 										</AccordionTrigger>
-										<AccordionContent>{song.album}</AccordionContent>
+										<AccordionContent className="p-5 w-auto h-auto">
+											<h2 className="text-3xl font-semibold mb-2">{song.title}</h2>
+											<div className="text-base text-gray-400 mb-2">
+												from <span className="text-black">{song.album}</span> by <span className="text-black">{song.artist}</span>
+											</div>
+											<div className="flex items-center gap-2">
+												<ThumbsUp className="w-4" /> {song.likes}
+											</div>
+										</AccordionContent>
 									</AccordionItem>
 								</Accordion>
 							</TableCell>
