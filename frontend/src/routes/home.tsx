@@ -27,11 +27,11 @@ export function App() {
 				clearTimeout(debounceRef.current);
 			}
 		};
-	}, [locale, seedNum, likesRange,page]);
+	}, [locale, seedNum, likesRange, page]);
 	return (
-		<section className="p-2">
+		<section className="h-screen overflow-hidden">
 			<Nav locale={locale} setLocale={setLocale} isExceeded={isExceeded} setIsExceeded={setIsExceeded} seedNum={seedNum} setSeedNum={setSeedNum} likesRange={likesRange} setLikesRange={setLikesRange} />
-			<SongsTable songs={songs} />
+			<SongsTable songs={songs} page={page} setPage={setPage} />
 		</section>
 	);
 }

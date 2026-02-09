@@ -5,6 +5,8 @@ import { Field } from "@/widgets/components/ui/field";
 import { Input } from "@/widgets/components/ui/input";
 import { Slider } from "@/widgets/components/ui/slider";
 import type { Locales } from "@/types";
+import { RadioGroup, RadioGroupItem } from "@/widgets/components/ui/radio-group";
+import { Label } from "@/widgets/components/ui/label";
 
 export default function Nav({ setSeedNum, setIsExceeded, locale, setLocale, seedNum, isExceeded, likesRange, setLikesRange }: { likesRange: number[]; setLikesRange: (args: number[]) => void; isExceeded: boolean; setIsExceeded: (args: boolean) => void; setSeedNum: (args: string) => void; locale: string; setLocale: (args: Locales) => void; seedNum: string }) {
 	const MAX_64_BIT = 18446744073709551615n;
@@ -62,6 +64,16 @@ export default function Nav({ setSeedNum, setIsExceeded, locale, setLocale, seed
 				</div>
 				<Slider id="likes" value={likesRange} onValueChange={setLikesRange} max={10} step={0.1} />
 			</div>
+			<RadioGroup defaultValue="table" className="flex w-auto">
+				<div className="flex items-center gap-3">
+					<RadioGroupItem value="table" id="table" />
+					<Label htmlFor="table">Table</Label>
+				</div>
+				<div className="flex items-center gap-3">
+					<RadioGroupItem value="List" id="list" />
+					<Label htmlFor="list">List</Label>
+				</div>
+			</RadioGroup>
 		</nav>
 	);
 }
