@@ -1,7 +1,6 @@
 import express from "express";
-import fs from "fs";
 import path from "path";
-import { generateSong } from "../services/song.service.js";
+import { generateAudio } from "../services/audio.service.js";
 
 const router = express.Router();
 
@@ -36,18 +35,12 @@ router.get("/", (req, res) => {
 	});
 });
 
-router.get("/audio/:seed/:index", (req, res) => {
+router.get("/audio/:seed/:index.mp3", (req, res) => {
 	const { seed, index } = req.params;
-	const file = path.resolve("./audio", `song-${seed}-${index}.mid`);
+	const filePath = generateAudio(seed, index);
 
-	if (!fs.existsSync(file)) {
-		return res.status(404).json({
-			ok: false,
-			error: "Audio file not found",
-		});
-	}
-
-	res.status(200).sendFile(file);
+	res.setHeader("Content-Type", "audio/mpeg");
+	res.sendFile(path.resolve(filePath));
 });
 
 export default router;

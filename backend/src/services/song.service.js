@@ -9,13 +9,14 @@ export function generateSong({ seed, index, locale, likesAvg }) {
 
 	const text = generateText(locale, contentRng);
 	const likes = generateLikes(likesAvg, likesRng);
-	const audioPath = generateAudio(seed, index);
+
+	generateAudio(seed, index);
 
 	return {
 		index,
 		...text,
 		likes,
-		audio: `/api/songs/audio/${seed}/${index}`,
-		audioFile: audioPath,
+		audio: `/api/songs/audio/${seed}/${index}.mp3`,
 	};
 }
+
