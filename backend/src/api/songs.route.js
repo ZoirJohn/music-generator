@@ -8,7 +8,7 @@ const router = express.Router();
 router.get("/", (req, res) => {
 	const seed = req.query.seed || "1";
 	const locale = req.query.locale || "en";
-	const likesAvg = Number(req.query.likes ?? 5);
+	const likesAvg = Number(req.query.likes ?? 10);
 	const page = Math.max(1, Number(req.query.page ?? 1));
 	const pageSize = Math.min(100, Number(req.query.pageSize ?? 50));
 

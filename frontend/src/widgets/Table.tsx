@@ -27,6 +27,7 @@ export default function SongsTable({ songs }: { songs: any[] }) {
 										<p className="p-2">{song.artist}</p>
 										<p className="p-2">{song.album}</p>
 										<p className="p-2">{song.genre}</p>
+										<p>{song.likes}</p>
 									</AccordionTrigger>
 									<AccordionContent>{song.album}</AccordionContent>
 								</AccordionItem>

@@ -4,8 +4,8 @@ import { generateLikes } from "../generators/likes.generator.js";
 import { generateAudio } from "../generators/audio.generator.js";
 
 export function generateSong({ seed, index, locale, likesAvg }) {
-	const contentRng = rng(seed, index);
-	const likesRng = rng(seed, "likes", index);
+	const contentRng = rng(seed, "content", likesAvg, index);
+	const likesRng = rng(seed, "likes", likesAvg, index);
 
 	const text = generateText(locale, contentRng);
 	const likes = generateLikes(likesAvg, likesRng);

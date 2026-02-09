@@ -10,6 +10,7 @@ export function App() {
 	const [seedNum, setSeedNum] = useState<string>("");
 	const [isExceeded, setIsExceeded] = useState(false);
 	const [likesRange, setLikesRange] = useState([10]);
+	const [page, setPage] = useState<number>(1);
 	const debounceRef = useRef<number | null>(null);
 
 	useEffect(() => {
@@ -18,8 +19,7 @@ export function App() {
 		}
 
 		debounceRef.current = setTimeout(() => {
-			client.getSongs(seedNum, locale, likesRange[0], 1).then((data) => setSongs(data.songs));
-			console.log("NEW");
+			client.getSongs(seedNum, locale, likesRange[0], page).then((data) => setSongs(data.songs));
 		}, 750);
 
 		return () => {
@@ -27,7 +27,7 @@ export function App() {
 				clearTimeout(debounceRef.current);
 			}
 		};
-	}, [locale, seedNum, likesRange]);
+	}, [locale, seedNum, likesRange,page]);
 	return (
 		<section className="p-2">
 			<Nav locale={locale} setLocale={setLocale} isExceeded={isExceeded} setIsExceeded={setIsExceeded} seedNum={seedNum} setSeedNum={setSeedNum} likesRange={likesRange} setLikesRange={setLikesRange} />
