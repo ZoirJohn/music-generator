@@ -1,9 +1,9 @@
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/widgets/components/ui/table";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/widgets/components/ui/accordion";
-import { ScrollArea } from "@/widgets/components/ui/scroll-area";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink } from "@/widgets/components/ui/pagination";
+import type { ModeType } from "@/routes/home";
 
-export default function SongsTable({ songs, page, setPage }: { songs: any[]; setPage: (args: number) => void; page: number }) {
+export default function SongsTable({ songs, page, setPage, mode }: { songs: any[]; setPage: (args: number) => void; page: number; mode: ModeType }) {
 	const HEAD_BODY_STYLE = "grid py-2 grid-cols-[25px_100px_1fr_1fr_1fr_1fr] justify-items-start";
 	return (
 		<Table>
@@ -18,11 +18,11 @@ export default function SongsTable({ songs, page, setPage }: { songs: any[]; set
 				</TableRow>
 			</TableHeader>
 			<TableBody>
-				<ScrollArea className="h-[calc(100vh-150px)]">
+				<div className={(mode == "list" ? "h-[calc(100vh-110px)]" : "h-[calc(100vh-150px)]") + " overflow-auto"}>
 					{songs.map((song) => (
-						<TableRow key={song.index} className="w-full">
-							<TableCell className="p-0" colSpan={4}>
-								<Accordion type="multiple" className="w-full" defaultValue={["notifications"]}>
+						<TableRow key={song.index} className="w-full block" data-row>
+							<TableCell  colSpan={4} className="w-full block p-0">
+								<Accordion type="multiple" defaultValue={["notifications"]}>
 									<AccordionItem key={song.title} value={song.title}>
 										<AccordionTrigger className={HEAD_BODY_STYLE + " " + "p-0 no-underline! items-center cursor-pointer [&>p]:max-w-full [&>p]:overflow-hidden [&>p]:text-ellipsis"}>
 											<p className="p-2">{song.index}</p>
@@ -37,21 +37,28 @@ export default function SongsTable({ songs, page, setPage }: { songs: any[]; set
 							</TableCell>
 						</TableRow>
 					))}
-				</ScrollArea>
+				</div>
 			</TableBody>
-			<TableFooter className="mt-1">
-				<Pagination className="pt-1">
-					<PaginationContent>
-						{Array.from({ length: 5 }).map((_, i) => {
-							return (
-								<PaginationItem onClick={() => setPage(i)}>
-									<PaginationLink isActive={page == i}>{i + 1}</PaginationLink>
-								</PaginationItem>
-							);
-						})}
-					</PaginationContent>
-				</Pagination>
-			</TableFooter>
+			{mode == "table" ? (
+				<TableFooter className="mt-1">
+					<Pagination className="pt-1">
+						<PaginationContent>
+							{Array.from({ length: 5 }).map((_, i) => {
+								const index = i + 1;
+								return (
+									<PaginationItem onClick={() => setPage(index)} key={index}>
+										<PaginationLink isActive={page == index} className={page == index ? "bg-gray-400 hover:bg-gray-500" : ""}>
+											{index}
+										</PaginationLink>
+									</PaginationItem>
+								);
+							})}
+						</PaginationContent>
+					</Pagination>
+				</TableFooter>
+			) : (
+				<></>
+			)}
 		</Table>
 	);
 }

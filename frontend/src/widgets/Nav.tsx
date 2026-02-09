@@ -7,9 +7,12 @@ import { Slider } from "@/widgets/components/ui/slider";
 import type { Locales } from "@/types";
 import { RadioGroup, RadioGroupItem } from "@/widgets/components/ui/radio-group";
 import { Label } from "@/widgets/components/ui/label";
+import type { ModeType } from "@/routes/home";
 
-export default function Nav({ setSeedNum, setIsExceeded, locale, setLocale, seedNum, isExceeded, likesRange, setLikesRange }: { likesRange: number[]; setLikesRange: (args: number[]) => void; isExceeded: boolean; setIsExceeded: (args: boolean) => void; setSeedNum: (args: string) => void; locale: string; setLocale: (args: Locales) => void; seedNum: string }) {
-	const MAX_64_BIT = 18446744073709551615n;
+type NavProps = { likesRange: number[]; setLikesRange: (args: number[]) => void; isExceeded: boolean; setIsExceeded: (args: boolean) => void; setSeedNum: (args: string) => void; locale: string; setLocale: (args: Locales) => void; seedNum: string; mode: ModeType; setMode: (args: ModeType) => void };
+
+export default function Nav({ setSeedNum, setIsExceeded, locale, setLocale, seedNum, isExceeded, likesRange, setLikesRange, setMode, mode }: NavProps) {
+	let MAX_64_BIT = 18446744073709551615n;
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const rawValue = e.target.value.replace(/[^0-9]/g, "");
 
@@ -64,13 +67,13 @@ export default function Nav({ setSeedNum, setIsExceeded, locale, setLocale, seed
 				</div>
 				<Slider id="likes" value={likesRange} onValueChange={setLikesRange} max={10} step={0.1} />
 			</div>
-			<RadioGroup defaultValue="table" className="flex w-auto">
+			<RadioGroup defaultValue={mode} className="flex w-auto" onValueChange={(currentMode: ModeType) => setMode(currentMode)}>
 				<div className="flex items-center gap-3">
 					<RadioGroupItem value="table" id="table" />
 					<Label htmlFor="table">Table</Label>
 				</div>
 				<div className="flex items-center gap-3">
-					<RadioGroupItem value="List" id="list" />
+					<RadioGroupItem value="list" id="list" />
 					<Label htmlFor="list">List</Label>
 				</div>
 			</RadioGroup>
