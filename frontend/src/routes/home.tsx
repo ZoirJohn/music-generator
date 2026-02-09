@@ -30,7 +30,9 @@ export function App() {
 		if (debounceRef.current) clearTimeout(debounceRef.current);
 
 		debounceRef.current = setTimeout(async () => {
-			const data = await client.getSongs(seedNum, locale, likesRange[0], page);
+			const fetchPage = mode === "list" ? 1 : page;
+
+			const data = await client.getSongs(seedNum, locale, likesRange[0], fetchPage);
 
 			if (mode === "table") {
 				cacheRef.current.table = data.songs;
@@ -38,10 +40,8 @@ export function App() {
 			}
 
 			if (mode === "list") {
-				const merged = page === 1 ? data.songs : [...cacheRef.current.list, ...data.songs];
-
-				cacheRef.current.list = merged;
-				setSongs(merged);
+				cacheRef.current.list = data.songs;
+				setSongs(data.songs);
 			}
 		}, 750);
 
@@ -51,16 +51,23 @@ export function App() {
 	}, [locale, seedNum, likesRange, page, mode]);
 
 	useEffect(() => {
-		setPage(1);
 		listPageRef.current = 1;
 		cacheRef.current.list = [];
+
+		if (mode === "list") {
+			setSongs([]);
+		}
 	}, [locale, seedNum, likesRange]);
 
 	useEffect(() => {
+		if (mode === "list") {
+			listPageRef.current = 1;
+			cacheRef.current.list = [];
+			setSongs([]);
+		}
+
 		if (mode === "table") {
 			setSongs(cacheRef.current.table);
-		} else {
-			setSongs(cacheRef.current.list);
 		}
 	}, [mode]);
 
@@ -75,9 +82,11 @@ export function App() {
 				if (!entry.isIntersecting) return;
 
 				listPageRef.current += 1;
+
 				const data = await client.getSongs(seedNum, locale, likesRange[0], listPageRef.current);
 
 				cacheRef.current.list = [...cacheRef.current.list, ...data.songs];
+
 				setSongs(cacheRef.current.list);
 			},
 			{ rootMargin: "100px" },
