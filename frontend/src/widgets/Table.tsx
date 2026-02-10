@@ -40,7 +40,7 @@ export default function SongsTable({ songs, page, setPage, mode, seed }: { songs
 											<div className="flex items-center gap-2">
 												<ThumbsUp className="w-4" /> {song.likes}
 											</div>
-											<audio src={import.meta.env.VITE_BASE_URL + `songs/audio/${seed}/${song.index}.wav`}>a</audio>
+											<audio src={import.meta.env.VITE_BASE_URL + `/songs/audio/${seed}/${song.index}.wav`} controls	className="mt-4"></audio>
 										</AccordionContent>
 									</AccordionItem>
 								</Accordion>
