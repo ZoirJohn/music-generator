@@ -9,7 +9,7 @@ export type ModeType = "table" | "list";
 export function App() {
 	const [songs, setSongs] = useState<any[]>([]);
 	const [locale, setLocale] = useState<Locales>("en");
-	const [seedNum, setSeedNum] = useState("");
+	const [seedNum, setSeedNum] = useState("1");
 	const [isExceeded, setIsExceeded] = useState(false);
 	const [likesRange, setLikesRange] = useState([10]);
 	const [page, setPage] = useState(1);
@@ -100,7 +100,7 @@ export function App() {
 	return (
 		<section className="h-screen overflow-hidden">
 			<Nav locale={locale} setLocale={setLocale} isExceeded={isExceeded} setIsExceeded={setIsExceeded} seedNum={seedNum} setSeedNum={setSeedNum} likesRange={likesRange} setLikesRange={setLikesRange} mode={mode} setMode={setMode} />
-			<SongsTable songs={songs} page={page} setPage={setPage} mode={mode} />
+			<SongsTable songs={songs} page={page} setPage={setPage} mode={mode} seed={seedNum} />
 		</section>
 	);
 }

@@ -4,7 +4,7 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink } from "@
 import type { ModeType } from "@/routes/home";
 import { ThumbsUp } from "lucide-react";
 
-export default function SongsTable({ songs, page, setPage, mode }: { songs: any[]; setPage: (args: number) => void; page: number; mode: ModeType }) {
+export default function SongsTable({ songs, page, setPage, mode, seed }: { songs: any[]; setPage: (args: number) => void; page: number; mode: ModeType; seed: string }) {
 	const HEAD_BODY_STYLE = "grid py-2 grid-cols-[25px_100px_1fr_1fr_1fr_1fr] justify-items-start";
 	return (
 		<Table>
@@ -40,6 +40,7 @@ export default function SongsTable({ songs, page, setPage, mode }: { songs: any[
 											<div className="flex items-center gap-2">
 												<ThumbsUp className="w-4" /> {song.likes}
 											</div>
+											<audio src={import.meta.env.VITE_BASE_URL + `songs/audio/${seed}/${song.index}.wav`}>a</audio>
 										</AccordionContent>
 									</AccordionItem>
 								</Accordion>

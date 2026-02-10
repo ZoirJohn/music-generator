@@ -5,7 +5,7 @@ import path from "path";
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
 	const seed = req.query.seed || "1";
 	const locale = req.query.locale || "en";
 	const likesAvg = Number(req.query.likes ?? 10);
@@ -15,17 +15,12 @@ router.get("/", (req, res) => {
 	const start = (page - 1) * pageSize + 1;
 	const end = start + pageSize - 1;
 
-	const songs = [];
+	let songs = [];
 	for (let i = start; i <= end; i++) {
-		songs.push(
-			generateSong({
-				seed,
-				index: i,
-				locale,
-				likesAvg,
-			}),
-		);
+		const song = generateSong({ seed, index: i, locale, likesAvg });
+		songs.push(song);
 	}
+	songs = await Promise.all(songs);
 
 	res.status(200).json({
 		ok: true,
