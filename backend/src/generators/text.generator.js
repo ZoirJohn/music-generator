@@ -19,7 +19,7 @@ export function generateText(locale, rng) {
 	const safeLocale = SUPPORTED_LOCALES.includes(locale) ? locale : "en";
 	faker.locale = safeLocale;
 
-	const seedNumbers = bigIntToNumberArray(rng.next(),2);
+	const seedNumbers = bigIntToNumberArray(rng.next(), 2);
 	faker.seed(seedNumbers);
 
 	return {

@@ -1,6 +1,7 @@
 import express from "express";
-import path from "path";
+import { generateSong } from "../song.generator.js";
 import { generateAudio } from "../services/audio.service.js";
+import path from "path";
 
 const router = express.Router();
 
@@ -35,12 +36,23 @@ router.get("/", (req, res) => {
 	});
 });
 
-router.get("/audio/:seed/:index.mp3", (req, res) => {
-	const { seed, index } = req.params;
-	const filePath = generateAudio(seed, index);
+router.get("/audio/:seed/:index.wav", async (req, res) => {
+	const seed = String(req.params.seed);
+	const index = Number(req.params.index);
 
-	res.setHeader("Content-Type", "audio/mpeg");
-	res.sendFile(path.resolve(filePath));
+	try {
+		const filePath = await generateAudio(seed, index);
+
+		res.setHeader("Content-Type", "audio/wav");
+		res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+		res.sendFile(path.resolve(filePath));
+	} catch (error) {
+		console.error("Error generating audio:", error);
+		res.status(500).json({
+			error: "Failed to generate audio",
+			message: error.message,
+		});
+	}
 });
 
 export default router;
